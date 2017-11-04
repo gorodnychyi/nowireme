@@ -277,7 +277,34 @@ nowire(void)
                      auth_server->authserv_ping_script_path_fragment,
                      encdata,
                      VERSION, auth_server->authserv_hostname);
-            // Parse output
             
+            // Parse output
+            char *res;
+            #ifdef USE_CYASSL
+                if (auth_server->authserv_use_ssl) {
+                    res = https_get(sockfd, request, auth_server->authserv_hostname);
+                } else {
+                    res = http_get(sockfd, request);
+                }
+            #endif
+            #ifndef USE_CYASSL
+                res = http_get(sockfd, request);
+            #endif
+                if (NULL == res) {
+                    debug(LOG_ERR, "There was a problem pinging the auth server!");
+                    if (!authdown) {
+                        fw_set_authdown();
+                        authdown = 1;
+                    }
+                } else if (strstr(res, "Update") == 0) {
+                    debug(LOG_WARNING, "Auth server did NOT say Pong!");
+                    free(res);
+                    exit (0);
+                } else (strstr(res, "Update") != 0) {
+                    debug(LOG_DEBUG, "We have to start update process!");
+                    // initiate update process
+                    free(res);
+                }
+                return;
         }
 }
