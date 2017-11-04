@@ -226,13 +226,13 @@ nowire(void)
     char encdata[MAX_BUF];
     char command[MAX_BUF];
     FILE *fh;
-    // int sockfd;
+    int sockfd;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
 
     debug(LOG_DEBUG, "Nowire started()");
     memset(request, 0, sizeof(request));
-    // sockfd = connect_auth_server();
+    sockfd = connect_auth_server();
 
     const int size = 256;
     char    ip_address[size];
@@ -251,11 +251,13 @@ nowire(void)
             // Collect device data.
             FILE* fp = fopen("/proc/net/arp", "r");
             char line[size];
+            char *gw_if;
+            gw_if = config_get_config()->gw_interface;
             while(fgets(line, size, fp))
             {
                 sscanf(line, "%s 0x%x 0x%x %s %s %s\n",ip_address,&hw_type,&flags,mac_address,mask,device);
-                if(strstr((device, "%s"), config_get_config()->gw_interface) != 0) {
-                debug(LOG_DEBUG, "Wlan_if: %s\nMAC: %s\n", device, mac_address);
+                if(strstr(device, gw_if) != 0) {
+                debug(LOG_DEBUG, "gw_if: %s\nMAC: %s\n", device, mac_address);
                 break;
                 }
             }
@@ -292,15 +294,11 @@ nowire(void)
             #endif
                 if (NULL == res) {
                     debug(LOG_ERR, "There was a problem pinging the auth server!");
-                    if (!authdown) {
-                        fw_set_authdown();
-                        authdown = 1;
-                    }
                 } else if (strstr(res, "Update") == 0) {
                     debug(LOG_WARNING, "Auth server did NOT say Pong!");
                     free(res);
                     exit (0);
-                } else (strstr(res, "Update") != 0) {
+                } else if (strstr(res, "Update") != 0) {
                     debug(LOG_DEBUG, "We have to start update process!");
                     // initiate update process
                     free(res);
