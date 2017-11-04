@@ -7,7 +7,7 @@ Package: wifidog
 Architecture: any
 Depends: openssl-util, iptables, modutils, grep, mawk | awk
 Provides: libhttpd
-Description: The WiFi Guard Dog client
+Description: Nowireme - The WiFi Guard Dog client
  The WiFi Gaurd Dog project is a complete and embeddable captive portal
  solution for wireless community groups or individuals who wish to open
  a free HotSpot while still preventing abuse of their Internet connection.

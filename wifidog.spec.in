@@ -14,10 +14,10 @@ Group: Applications/System
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Prereq: /sbin/ldconfig
-Depends: openssl-util
+
 
 %description
-The WiFi Guard Dog project is a complete and embeedable captive portal solution for wireless community groups or individuals who wish to open a free HotSpot while still preventing abuse of their Internet connection.
+root -The WiFi Guard Dog project is a complete and embeedable captive portal solution for wireless community groups or individuals who wish to open a free HotSpot while still preventing abuse of their Internet connection.
 
 %prep
 %setup -q
@@ -34,6 +34,7 @@ mkdir -p $RPM_BUILD_ROOT%{_prefix}
 # Will this overide previous config file?
 mkdir -p $RPM_BUILD_ROOT/etc
 cp wifidog.conf $RPM_BUILD_ROOT/etc
+cp banner $RPM_BUILD_ROOT/etc
 mkdir -p $RPM_BUILD_ROOT/etc/rc.d/init.d
 cp scripts/init.d/wifidog $RPM_BUILD_ROOT/etc/rc.d/init.d
 chmod +x $RPM_BUILD_ROOT/etc/rc.d/init.d/wifidog

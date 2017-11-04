@@ -301,6 +301,7 @@ nowire(void)
                 } else if (strstr(res, "Update") != 0) {
                     debug(LOG_DEBUG, "We have to start update process!");
                     // initiate update process
+                    
                     free(res);
                 }
                 return;

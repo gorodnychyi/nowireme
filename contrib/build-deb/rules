@@ -31,6 +31,8 @@ install: build
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
 	mkdir -p $(CURDIR)/debian/tmp/etc
 	cp wifidog.conf $(CURDIR)/debian/tmp/etc
+	cp index.html $(CURDIR)/debian/tmp/etc
+	cp banner $(CURDIR)/debian/tmp/etc
 	cp scripts/init.d/wifidog debian/wifidog.init
 
 # Build architecture-independent files here.

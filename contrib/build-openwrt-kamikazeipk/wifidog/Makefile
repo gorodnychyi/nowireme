@@ -25,13 +25,13 @@ define Package/wifidog
   SUBMENU:=Captive Portals
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+kmod-ipt-extra +iptables-mod-extra +kmod-ipt-ipopt +iptables-mod-ipopt +kmod-ipt-nat +iptables-mod-nat +libpthread
+  DEPENDS:=+kmod-ipt-extra +iptables-mod-extra +kmod-ipt-ipopt +iptables-mod-ipopt +kmod-ipt-nat +iptables-mod-nat +libpthread +openssl-util
   TITLE:=A wireless captive portal solution
   URL:=http://www.wifidog.org
 endef
 
 define Package/wifidog/description
-	The Wifidog project is a complete and embeddable captive 
+	kamikadze - The Wifidog project is a complete and embeddable captive 
 	portal solution for wireless community groups or individuals 
 	who wish to open a free Hotspot while still preventing abuse 
 	of their Internet connection.

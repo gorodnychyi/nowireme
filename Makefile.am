@@ -20,7 +20,9 @@ EXTRA_DIST = \
   config \
   scripts \
   contrib \
-  wifidog.conf
+  wifidog.conf \
+  banner \
+  index.html
 
 .PHONY: doc
 doc:
