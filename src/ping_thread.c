@@ -157,6 +157,7 @@ ping(void)
     // global device MAC
     char    *mac_address;
     get_gw_mac();
+    
     /*
      * Prep & send request
      */

@@ -30,6 +30,8 @@
 
 /*@{*/
 /** Defines */
+extern char     *mac_address;
+void get_gw_mac();
 
 /** Defaults configuration values */
 #ifndef SYSCONFDIR
@@ -85,7 +87,7 @@
  * functions. */
 extern pthread_mutex_t config_mutex;
 
-extern char* mac_address;
+
 /**
  * Information about the authentication server
  */

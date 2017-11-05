@@ -1072,11 +1072,12 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 
 }
 
-void get_gw_mac() 
+void 
+get_gw_mac() 
 {
     char    *mac_address;
-
-    mac_address="00:99:88:77:66";
+    return
+        mac_address="00:99:88:77:66";
 
 //    printf("%s",mac_address);
 //    return 0;
