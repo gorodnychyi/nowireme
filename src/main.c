@@ -30,5 +30,8 @@
 int
 main(int argc, char **argv)
 {
+	char *gw_mac_addr;
+	gw_mac_addr = "00:00:00";
+
     return gw_main(argc, argv);
 }
