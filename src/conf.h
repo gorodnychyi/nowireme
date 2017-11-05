@@ -223,7 +223,7 @@ t_auth_serv *get_auth_server(void);
 void mark_auth_server_bad(t_auth_serv *);
 
 /** @brief Additional nowireme functions */
-extern char *gw_mac_address;
+extern char *gw_mac_result;
 const char * get_gw_mac() ;
 
 /** @brief Fetch a firewall rule set. */

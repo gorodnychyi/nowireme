@@ -158,6 +158,7 @@ ping(void)
     /*
      * Prep & send request
      */
+    
     snprintf(request, sizeof(request) - 1,
              "GET %s%sgw_id=%s&sys_uptime=%lu&sys_memfree=%u&sys_load=%.2f&wifidog_uptime=%lu HTTP/1.0\r\n"
              "User-Agent: NoWireMe %s\r\n"
