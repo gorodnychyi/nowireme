@@ -98,7 +98,6 @@ ping(void)
 {
     void nowire(void);
     char request[MAX_BUF];
-    char gw_mac_addr[MAX_BUF];
     FILE *fh;
     int sockfd;
     unsigned long int sys_uptime = 0;
@@ -198,7 +197,7 @@ ping(void)
         }
         free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
-        debug(LOG_DEBUG, "Server says: Pong/Update %s", gw_mac_addr);
+        debug(LOG_DEBUG, "Server says: Pong/Update %s", get_gw_mac());
         if (authdown) {
             fw_set_authup();
             authdown = 0;

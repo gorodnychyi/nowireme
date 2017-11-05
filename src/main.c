@@ -27,15 +27,8 @@
 
 #include "gateway.h"
 
-char gw_mac_addr;
-void mac() {
-	gw_mac_addr="00:00:09";
-	return;
-}
-
 int
 main(int argc, char **argv)
 {
-    mac();
     return gw_main(argc, argv);
 }
