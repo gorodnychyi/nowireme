@@ -1045,7 +1045,6 @@ config_notnull(const void *parm, const char *parmname)
 t_auth_serv *
 get_auth_server(void)
 {
-
     /* This is as good as atomic */
     return config.auth_servers;
 }
@@ -1072,10 +1071,9 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 
 }
 
-t_addr_mac *
-get_gw_mac(void) 
+const char * get_gw_mac() 
 {
-    char    *mac_address;
-    mac_address = "00:99:88:77:66";
-    return mac_address;
+    char    *gw_mac_address;
+    gw_mac_address = "00:99:88:77:66";
+    return gw_mac_address;
 }
