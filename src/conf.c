@@ -1071,7 +1071,7 @@ mark_auth_server_bad(t_auth_serv * bad_server)
     }
 
 }
-    char    *mac_address;
+char    *mac_address;
 void get_gw_mac() 
 {
 //    char    *mac_address;
