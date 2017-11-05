@@ -154,12 +154,9 @@ ping(void)
 
         fclose(fh);
     }
-    // global device MAC
-    char    *mac_address;
-    debug(LOG_DEBUG, "Before: %s", mac_address);
+    char *mac_address;
     get_gw_mac();
-    debug(LOG_DEBUG, "After: %s", &mac_address);
-//    debug(LOG_DEBUG, "Full: %s", &get_gw_mac());
+    debug(LOG_DEBUG, "GW_MAC: %s", mac_address);
 
     /*
      * Prep & send request
