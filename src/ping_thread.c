@@ -105,6 +105,8 @@ ping(void)
     float sys_load = 0;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
+    t_addr_mac *gw_mac = NULL;
+    gw_mac = get_gw_mac();
     static int authdown = 0;
 
     debug(LOG_DEBUG, "Entering ping()");
@@ -154,9 +156,8 @@ ping(void)
 
         fclose(fh);
     }
-    char *mac_address;
-    get_gw_mac();
-    debug(LOG_DEBUG, "GW_MAC: %s", mac_address);
+    //mymac = get_gw_mac();
+    debug(LOG_DEBUG, "GW_MAC: %s", gw_mac->mac_address);
 
     /*
      * Prep & send request
@@ -200,7 +201,7 @@ ping(void)
         }
         free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
-        debug(LOG_DEBUG, "Server says: Pong/Update %s", mac_address);
+        debug(LOG_DEBUG, "Server says: Pong/Update %s", gw_mac->mac_address);
         if (authdown) {
             fw_set_authup();
             authdown = 0;
