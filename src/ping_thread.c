@@ -158,7 +158,13 @@ ping(void)
     /*
      * Prep & send request
      */
-    
+    char *test_result;
+    FILE * fo;
+    fo = popen("ifconfig br-lan | grep HWaddr | awk '{print $5}'", "r");
+    fscanf(fo, "%s", test_result);
+    fclose(fo);
+    debug(LOG_DEBUG, "Test variable: %s",test_result);
+    //
     snprintf(request, sizeof(request) - 1,
              "GET %s%sgw_id=%s&sys_uptime=%lu&sys_memfree=%u&sys_load=%.2f&wifidog_uptime=%lu HTTP/1.0\r\n"
              "User-Agent: NoWireMe %s\r\n"
