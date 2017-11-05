@@ -85,6 +85,7 @@
  * functions. */
 extern pthread_mutex_t config_mutex;
 
+extern char* mac_address;
 /**
  * Information about the authentication server
  */
