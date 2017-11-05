@@ -59,7 +59,8 @@ endef
 
 define Package/wifidog/postinst
 #!/bin/sh
-
+# check SSL lib symlink exists
+if [ -n /usr/lib/libwolfssl.so.12 ]; then ln -s /usr/lib/libwolfssl.so.3.6.0 /usr/lib/libwolfssl.so.12; fi
 # # check if the wifidog is already running, if so restart it
 if /etc/init.d/wifidog status | grep 'Authentication servers' > /dev/null; then
         # create copies of passwd and group, if we use squashfs
