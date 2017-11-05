@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <syslog.h>
+
 #include <pthread.h>
 
 #include <string.h>
@@ -1072,13 +1073,7 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 
 const char * get_gw_mac() 
 {
-    char    *gw_mac_result;
-    // char    command[1024];
-    // FILE * fo;
-    //     sprintf(command, "ifconfig br-lan | grep HWaddr | awk '{print $5}'");
-    //     fo = popen(command, "r");
-    //     fscanf(fo, "%s", gw_mac_result);
-    //     fclose(fo);
-        gw_mac_result = "40:A5:EF:75:37:02";
-    return gw_mac_result;
+    char    *gw_mac_address;
+    gw_mac_address = "40:A5:EF:75:37:02";
+    return gw_mac_address;
 }
