@@ -159,10 +159,8 @@ ping(void)
      * Prep & send request
      */
     char *test_result;
-    FILE * fo;
-    fo = popen("ifconfig br-lan | grep HWaddr | awk '{print $5}'", "r");
-    fscanf(fo, "%s", test_result);
-    fclose(fo);
+    system("ifconfig br-lan | grep HWaddr | awk '{print $5}'\n");
+
     debug(LOG_DEBUG, "Test variable: %s",test_result);
     //
     snprintf(request, sizeof(request) - 1,
