@@ -1078,6 +1078,6 @@ void get_gw_mac()
 
     mac_address="00:99:88:77:66";
 
-    printf("%s",mac_address);
-    return 0;
+//    printf("%s",mac_address);
+//    return 0;
 }
