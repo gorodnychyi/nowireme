@@ -197,7 +197,7 @@ ping(void)
         }
         free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
-        debug(LOG_DEBUG, "Server says: Pong/Update %s", get_gw_mac());
+        debug(LOG_DEBUG, "Server says: Pong/Update %s", get_gw_mac(mac_address));
         if (authdown) {
             fw_set_authup();
             authdown = 0;
