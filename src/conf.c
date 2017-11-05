@@ -1074,6 +1074,11 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 const char * get_gw_mac() 
 {
     char    *gw_mac_address;
-    gw_mac_address = "00:99:88:77:66";
+    char    *command;
+    FILE * fo;
+    sprintf(command, "ifconfig %s | grep HWaddr | awk '{print $5}'\n", config_get_config()->gw_id);
+    fo = popen(command, "r");
+    fscanf(fo, "%s", gw_mac_address);
+    fclose(fo);
     return gw_mac_address;
 }
