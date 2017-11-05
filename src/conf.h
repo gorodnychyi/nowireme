@@ -30,8 +30,7 @@
 
 /*@{*/
 /** Defines */
-extern char     *mac_address;
-void get_gw_mac();
+extern char *mac_address;
 
 /** Defaults configuration values */
 #ifndef SYSCONFDIR
