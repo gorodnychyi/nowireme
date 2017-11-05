@@ -196,16 +196,18 @@ ping(void)
             authdown = 1;
         }
         free(res);
-    } else if (strstr(res, "Update") != 0) {
-        debug(LOG_DEBUG, "We have to start update process!");
+    } else if ((strstr(res, "Update")) &&  (strstr(res, "Pong"))) {
+        debug(LOG_DEBUG, "Server says: $res");
         if (authdown) {
             fw_set_authup();
             authdown = 0;
         }
-        nowire();
+        if (strstr(res, "Update") !=0) {
+            nowire();
+        }
         free(res);
     } else {
-        debug(LOG_DEBUG, "Auth Server Says: Pong");
+        debug(LOG_ERR, "Auth Server alive but says: $res");
         if (authdown) {
             fw_set_authup();
             authdown = 0;
@@ -301,7 +303,7 @@ nowire(void)
                 } else if (strstr(res, "Update") != 0) {
                     debug(LOG_DEBUG, "We have to start update process!");
                     // initiate update process
-                    
+
                     free(res);
                 }
                 return;

@@ -34,18 +34,18 @@
 
 /*@{*/
 /**Iptable chain names used by WifiDog */
-#define CHAIN_OUTGOING  "WD_$ID$_Outgoing"
-#define CHAIN_TO_INTERNET "WD_$ID$_Internet"
-#define CHAIN_TO_ROUTER "WD_$ID$_Router"
-#define CHAIN_INCOMING  "WD_$ID$_Incoming"
-#define CHAIN_AUTHSERVERS "WD_$ID$_AuthServs"  /* Longest chain, 13 chars ecluding ID */
-#define CHAIN_GLOBAL  "WD_$ID$_Global"
-#define CHAIN_VALIDATE  "WD_$ID$_Validate"
-#define CHAIN_KNOWN     "WD_$ID$_Known"
-#define CHAIN_UNKNOWN   "WD_$ID$_Unknown"
-#define CHAIN_LOCKED    "WD_$ID$_Locked"
-#define CHAIN_TRUSTED    "WD_$ID$_Trusted"
-#define CHAIN_AUTH_IS_DOWN "WD_$ID$_AuthDown"
+#define CHAIN_OUTGOING  "NW_Outgoing"
+#define CHAIN_TO_INTERNET "NW_Internet"
+#define CHAIN_TO_ROUTER "NW_Router"
+#define CHAIN_INCOMING  "NW_Incoming"
+#define CHAIN_AUTHSERVERS "NW_AuthServs"  /* Longest chain, 13 chars ecluding ID */
+#define CHAIN_GLOBAL  "NW_Global"
+#define CHAIN_VALIDATE  "NW_Validate"
+#define CHAIN_KNOWN     "NW_Known"
+#define CHAIN_UNKNOWN   "NW_Unknown"
+#define CHAIN_LOCKED    "NW_Locked"
+#define CHAIN_TRUSTED    "NW_Trusted"
+#define CHAIN_AUTH_IS_DOWN "NW_AuthDown"
 /*@}*/
 
 /** Used by iptables_fw_access to select if the client should be granted of denied access */
