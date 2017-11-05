@@ -1072,12 +1072,13 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 
 const char * get_gw_mac() 
 {
-    char    result[1024];
+    char    *result;
     char    command[1024];
     FILE * fo;
         sprintf(command, "ifconfig br-lan | grep HWaddr | awk '{print $5}'");
         fo = popen(command, "r");
         fscanf(fo, "%s", result);
         fclose(fo);
+        //result = "40:A5:EF:75:37:02";
     return result;
 }

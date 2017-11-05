@@ -106,6 +106,7 @@ ping(void)
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
     static int authdown = 0;
+    const char* gwMac = get_gw_mac();
 
     debug(LOG_DEBUG, "Entering ping()");
     memset(request, 0, sizeof(request));
@@ -154,10 +155,6 @@ ping(void)
 
         fclose(fh);
     }
-
-    const char* szMac = get_gw_mac();
-    debug(LOG_DEBUG, "GW_MAC: %s", szMac);
-
     /*
      * Prep & send request
      */
@@ -168,7 +165,8 @@ ping(void)
              "\r\n",
              auth_server->authserv_path,
              auth_server->authserv_ping_script_path_fragment,
-             config_get_config()->gw_id,
+             //config_get_config()->gw_id,
+             gwMac,
              sys_uptime,
              sys_memfree,
              sys_load,
@@ -200,7 +198,7 @@ ping(void)
         }
         free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
-        debug(LOG_DEBUG, "Server says: Pong/Update %s", res);
+        debug(LOG_DEBUG, "Server says: Pong/Update");
         if (authdown) {
             fw_set_authup();
             authdown = 0;
