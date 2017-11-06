@@ -190,13 +190,13 @@ ping(void)
             fw_set_authdown();
             authdown = 1;
         }
-    } else if (strstr(res, "Pong") == 0) {
-        debug(LOG_WARNING, "Auth server did NOT say Pong!");
-        if (!authdown) {
-            fw_set_authdown();
-            authdown = 1;
-        }
-        free(res);
+    // } else if (strstr(res, "Pong") == 0) {
+    //     debug(LOG_WARNING, "Auth server did NOT say Pong!");
+    //     if (!authdown) {
+    //         fw_set_authdown();
+    //         authdown = 1;
+    //     }
+    //     free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
         debug(LOG_DEBUG, "Server says: Pong/Update");
         if (authdown) {
