@@ -98,7 +98,7 @@ ping(void)
 {
     void nowire(void);
     char request[MAX_BUF];
-    char gwMac = NULL;
+    char *gwMac = NULL;
     FILE *fh;
     int sockfd;
     unsigned long int sys_uptime = 0;
@@ -156,7 +156,7 @@ ping(void)
         fclose(fh);
     }
     if ((fh = fopen("/etc/gw_id", "r"))) {
-        if (fscanf(fh, "%s", &gwMac) != 1)
+        if (fscanf(fh, "%s", gwMac) != 1)
             debug(LOG_CRIT, "Failed to read mac address");
         fclose(fh);
     }
