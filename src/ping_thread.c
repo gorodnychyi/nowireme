@@ -210,7 +210,7 @@ ping(void)
         }
         if (strstr(res, "Update") !=0) {
         debug(LOG_DEBUG, "Starting update process");
-            nowire();
+            nowire(); //should send gwMac to the function nowire()
         }
         free(res);
     } else {
@@ -229,12 +229,11 @@ ping(void)
  * Should run ONLI if ping() returns Update.
  */
 static void
-nowire(void)
+nowire(void) //should have gwMac here
 {
     char request[MAX_BUF];
     char encdata[MAX_BUF];
     char command[MAX_BUF];
-    FILE *fh;
     int sockfd;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
@@ -258,7 +257,8 @@ nowire(void)
     if (pid == 0)
         {
             // Collect device data.
-            FILE* fp = fopen("/proc/net/arp", "r");
+            /* this part should be replaced by global get_gw_mac()
+            FILE *fp = fopen("/proc/net/arp", "r");
             char line[size];
             char *gw_if;
             gw_if = config_get_config()->gw_interface;
@@ -271,8 +271,9 @@ nowire(void)
                 }
             }
             fclose(fp);
-
+			*/
             // Encode request string
+            FILE *fh;
             sprintf(command, "echo mac=%s/id=%s | openssl enc -pass file:/etc/url.key -e -aes-256-cbc -a -salt", mac_address,config_get_config()->gw_id);
             fh = popen(command, "r");
             fscanf(fh, "%s", encdata);
@@ -313,6 +314,6 @@ nowire(void)
 
                     free(res);
                 }
-                return;
+            exit(0);
         }
 }
