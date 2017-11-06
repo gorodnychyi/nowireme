@@ -106,6 +106,9 @@ ping(void)
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
     static int authdown = 0;
+    
+    void get_gw_mac();
+    //get_gw_mac();
     const char* gwMac = get_gw_mac();
 
     debug(LOG_DEBUG, "Entering ping()");
