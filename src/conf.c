@@ -1081,6 +1081,7 @@ const char * get_gw_mac()
             debug(LOG_CRIT, "Failed to read loadavg");
         fclose(fh);
     }
-    //gw_mac_address = "40:A5:EF:75:37:02";
+    printf("In function: %s\n", gw_mac_address);
+    gw_mac_address = "40:A5:EF:75:37:02";
     return gw_mac_address;
 }
