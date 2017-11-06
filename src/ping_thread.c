@@ -98,7 +98,7 @@ ping(void)
 {
     void nowire(void);
     char request[MAX_BUF];
-    char *gwMac = NULL;
+    char *gwMac;
     FILE *fh;
     int sockfd;
     unsigned long int sys_uptime = 0;
@@ -160,6 +160,7 @@ ping(void)
             debug(LOG_CRIT, "Failed to read mac address");
         fclose(fh);
     }
+    
     /*
      * Prep & send request
      */
