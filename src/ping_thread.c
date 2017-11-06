@@ -227,9 +227,9 @@ static void
 nowire(void)
 {
     char request[MAX_BUF];
-    char encdata[MAX_BUF];
-    char command[MAX_BUF];
-    FILE *fh;
+    char *encdata; //[MAX_BUF];
+    // char command[MAX_BUF];
+    // FILE *fh;
     int sockfd;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
@@ -238,14 +238,15 @@ nowire(void)
     memset(request, 0, sizeof(request));
     sockfd = connect_auth_server();
 
-    const int size = 256;
-    char    ip_address[size];
-    int     hw_type;
-    int     flags;
-    char    mac_address[size];
-    char    mask[size];
-    char    device[size];
+    // const int size = 256;
+    // char    ip_address[size];
+    // int     hw_type;
+    // int     flags;
+    // char    mac_address[size];
+    // char    mask[size];
+    // char    device[size];
 
+    encdata = "hello_world";
 
     pid_t   pid;
     pid = fork();
@@ -253,25 +254,25 @@ nowire(void)
     if (pid == 0)
         {
             // Collect device data.
-            FILE* fp = fopen("/proc/net/arp", "r");
-            char line[size];
-            char *gw_if;
-            gw_if = config_get_config()->gw_interface;
-            while(fgets(line, size, fp))
-            {
-                sscanf(line, "%s 0x%x 0x%x %s %s %s\n",ip_address,&hw_type,&flags,mac_address,mask,device);
-                if(strstr(device, gw_if) != 0) {
-                debug(LOG_DEBUG, "gw_if: %s\nMAC: %s\n", device, mac_address);
-                break;
-                }
-            }
-            fclose(fp);
+            // FILE* fp = fopen("/proc/net/arp", "r");
+            // char line[size];
+            // char *gw_if;
+            // gw_if = config_get_config()->gw_interface;
+            // while(fgets(line, size, fp))
+            // {
+            //     sscanf(line, "%s 0x%x 0x%x %s %s %s\n",ip_address,&hw_type,&flags,mac_address,mask,device);
+            //     if(strstr(device, gw_if) != 0) {
+            //     debug(LOG_DEBUG, "gw_if: %s\nMAC: %s\n", device, mac_address);
+            //     break;
+            //     }
+            // }
+            // fclose(fp);
 
-            // Encode request string
-            sprintf(command, "echo mac=%s/id=%s | openssl enc -pass file:/etc/url.key -e -aes-256-cbc -a -salt", mac_address,config_get_config()->gw_id);
-            fh = popen(command, "r");
-            fscanf(fh, "%s", encdata);
-            fclose(fh); 
+            // // Encode request string
+            // sprintf(command, "echo mac=%s/id=%s | openssl enc -pass file:/etc/url.key -e -aes-256-cbc -a -salt", mac_address,config_get_config()->gw_id);
+            // fh = popen(command, "r");
+            // fscanf(fh, "%s", encdata);
+            // fclose(fh); 
 
             // Prepare&send GET request
             snprintf(request, sizeof(request) - 1,
@@ -309,5 +310,6 @@ nowire(void)
                     free(res);
                 }
                 return;
+        exit(0);
         }
 }
