@@ -1077,7 +1077,7 @@ const char * get_gw_mac()
     FILE *fh;
     
     if ((fh = fopen("/etc/gw_id", "r"))) {
-        if (fscanf(fh, "%s", &gw_mac_address) != 1)
+        if (fscanf(fh, "%s", gw_mac_address) != 1)
             debug(LOG_CRIT, "Failed to read loadavg");
         fclose(fh);
     }
