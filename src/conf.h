@@ -222,9 +222,6 @@ t_auth_serv *get_auth_server(void);
 /** @brief Bump server to bottom of the list */
 void mark_auth_server_bad(t_auth_serv *);
 
-/** @brief Additional nowireme functions */
-const char * get_gw_mac();
-
 /** @brief Fetch a firewall rule set. */
 t_firewall_rule *get_ruleset(const char *);
 

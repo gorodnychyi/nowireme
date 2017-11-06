@@ -1070,18 +1070,3 @@ mark_auth_server_bad(t_auth_serv * bad_server)
     }
 
 }
-
-const char * get_gw_mac() 
-{
-    char    *gw_mac_address;
-    FILE *fh;
-    
-    if ((fh = fopen("/etc/gw_id", "r"))) {
-        if (fscanf(fh, "%s", gw_mac_address) != 1)
-            debug(LOG_CRIT, "Failed to read loadavg");
-        fclose(fh);
-    }
-    printf("In function: %s\n", gw_mac_address);
-    gw_mac_address = "40:A5:EF:75:37:02";
-    return gw_mac_address;
-}

@@ -98,6 +98,7 @@ ping(void)
 {
     void nowire(void);
     char request[MAX_BUF];
+    char gwMac = NULL;
     FILE *fh;
     int sockfd;
     unsigned long int sys_uptime = 0;
@@ -106,7 +107,6 @@ ping(void)
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
     static int authdown = 0;
-    const char* gwMac = get_gw_mac();
 
     debug(LOG_DEBUG, "Entering ping()");
     memset(request, 0, sizeof(request));
@@ -155,6 +155,11 @@ ping(void)
 
         fclose(fh);
     }
+    if ((fh = fopen("/etc/gw_id", "r"))) {
+        if (fscanf(fh, "%s", &gwMac) != 1)
+            debug(LOG_CRIT, "Failed to read mac address");
+        fclose(fh);
+    }
     /*
      * Prep & send request
      */
@@ -190,13 +195,6 @@ ping(void)
             fw_set_authdown();
             authdown = 1;
         }
-    // } else if (strstr(res, "Pong") == 0) {
-    //     debug(LOG_WARNING, "Auth server did NOT say Pong!");
-    //     if (!authdown) {
-    //         fw_set_authdown();
-    //         authdown = 1;
-    //     }
-    //     free(res);
     } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
         debug(LOG_DEBUG, "Server says: Pong/Update");
         if (authdown) {
