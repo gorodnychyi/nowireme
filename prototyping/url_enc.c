@@ -1,3 +1,8 @@
+/* building instructions
+g++ -Wall -Wextra url_enc.c getmac.c -o url_enc
+*/
+
+
 #include <iostream>
 #include <stdio.h>
 #include <string>
