@@ -106,9 +106,6 @@ ping(void)
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
     static int authdown = 0;
-    
-    void get_gw_mac();
-    //get_gw_mac();
     const char* gwMac = get_gw_mac();
 
     debug(LOG_DEBUG, "Entering ping()");
@@ -161,11 +158,6 @@ ping(void)
     /*
      * Prep & send request
      */
-    char *test_result;
-    system("ifconfig br-lan | grep HWaddr | awk '{print $5}'\n");
-
-    debug(LOG_DEBUG, "Test variable: %s",test_result);
-    //
     snprintf(request, sizeof(request) - 1,
              "GET %s%sgw_id=%s&sys_uptime=%lu&sys_memfree=%u&sys_load=%.2f&wifidog_uptime=%lu HTTP/1.0\r\n"
              "User-Agent: NoWireMe %s\r\n"
@@ -213,7 +205,7 @@ ping(void)
         }
         if (strstr(res, "Update") !=0) {
         debug(LOG_DEBUG, "Starting update process");
-            nowire(); //should send gwMac to the function nowire()
+            nowire();
         }
         free(res);
     } else {
@@ -232,11 +224,12 @@ ping(void)
  * Should run ONLI if ping() returns Update.
  */
 static void
-nowire(void) //should have gwMac here
+nowire(void)
 {
     char request[MAX_BUF];
     char encdata[MAX_BUF];
     char command[MAX_BUF];
+    FILE *fh;
     int sockfd;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
@@ -260,8 +253,7 @@ nowire(void) //should have gwMac here
     if (pid == 0)
         {
             // Collect device data.
-            /* this part should be replaced by global get_gw_mac()
-            FILE *fp = fopen("/proc/net/arp", "r");
+            FILE* fp = fopen("/proc/net/arp", "r");
             char line[size];
             char *gw_if;
             gw_if = config_get_config()->gw_interface;
@@ -274,9 +266,8 @@ nowire(void) //should have gwMac here
                 }
             }
             fclose(fp);
-			*/
+
             // Encode request string
-            FILE *fh;
             sprintf(command, "echo mac=%s/id=%s | openssl enc -pass file:/etc/url.key -e -aes-256-cbc -a -salt", mac_address,config_get_config()->gw_id);
             fh = popen(command, "r");
             fscanf(fh, "%s", encdata);
@@ -317,6 +308,6 @@ nowire(void) //should have gwMac here
 
                     free(res);
                 }
-            exit(0);
+                return;
         }
 }

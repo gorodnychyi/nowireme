@@ -1071,18 +1071,9 @@ mark_auth_server_bad(t_auth_serv * bad_server)
 
 }
 
-void get_gw_mac()
+const char * get_gw_mac() 
 {
-
-    FILE *in;
-    char buff[512];
-
-    if(!(in = popen("ifconfig br-lan | grep HWaddr | awk '{print $5}'", "r"))){
-        exit(1);
-    }
-    while(fgets(buff, sizeof(buff), in)!=NULL){
-        printf("%s", buff);
-    }
-    pclose(in);
-
+    char    *gw_mac_address;
+    gw_mac_address = "40:A5:EF:75:37:02";
+    return gw_mac_address;
 }
