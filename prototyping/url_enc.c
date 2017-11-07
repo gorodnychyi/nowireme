@@ -16,45 +16,22 @@ using namespace std;
 FILE * fo;
 const int size = 256;
 int main(){
-    printf("Initialization main function here_____\n");
+    printf("_____Initialization main function here_____\n");
     void first();
     first();
 }
 
 void first()
 {
-    printf("First function start here_____\n");
-    //int second();
-    //second();
-    char buff;
-    //char result[12];
-    //get_my_mac();
+    printf("_____First function start here_____\n");
+
     const char *gwMac;
 
     gwMac = get_my_mac();
 
-    //gwMac = sscanf("%s", &gwMac);
-
-    printf("Should be here: %s\n", buff);
+    printf("Should be here: %s\n", gwMac);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int second()
 {

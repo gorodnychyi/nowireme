@@ -10,25 +10,14 @@
 
 const char *get_my_mac()
 {
-
-	printf("MAC function start here_____\n");
+	printf("_____MAC function start here_____\n");
 	FILE *in;
-	char buff[512];
-	//char *result;
-	//result = NULL;
+	static char buff[512];
+		in = fopen("/tmp/gw_mac", "r");
+		fscanf(in, "%s", buff);
+		fclose(in);
+		printf("In function: %s\n", buff);
 
-	in = popen("ifconfig wlp2s0 | grep HWaddr | awk '{print $5}'", "r");
-
-	fgets(buff, sizeof(buff), in);
-
-	pclose(in);
-	
-	//sprintf(result, "%s", buff);
-
-	//printf("0_this: %s\n", result);
-	printf("In function: %s\n", buff);
-	
-	return 0;
-	//free(result);
-
+	return buff;
+	free(buff);
 }

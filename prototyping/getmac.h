@@ -2,5 +2,6 @@
 #define _GETMAC_H_
 
 const char *get_my_mac();
+extern char *buff;
 
 #endif
