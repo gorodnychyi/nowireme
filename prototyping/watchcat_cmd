@@ -1,0 +1,4 @@
+[ `curl -sL -w "%{http_code}\\n" https://nowire.me/keepalive/?gw_id=40A5EF753702 -o /dev/hull` -eq "200" ]
+
+to let us know if device is still up
+
