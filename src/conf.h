@@ -30,10 +30,6 @@
 
 /*@{*/
 /** Defines */
-// Nowireme part
-// const char *get_my_mac();
-// extern char *buff;
-//
 /** Defaults configuration values */
 #ifndef SYSCONFDIR
 #define DEFAULT_CONFIGFILE "/etc/wifidog.conf"
