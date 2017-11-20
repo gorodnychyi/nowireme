@@ -58,6 +58,7 @@
 
 static void ping(void);
 static void nowire(void);
+static void runner(void);
 
 /** Launches a thread that periodically checks in with the wifidog auth server to perform heartbeat function.
 @param arg NULL
@@ -98,7 +99,6 @@ ping(void)
 {
     void nowire(void);
     char request[MAX_BUF];
-    char *gwMac;
     FILE *fh;
     int sockfd;
     unsigned long int sys_uptime = 0;
@@ -155,12 +155,6 @@ ping(void)
 
         fclose(fh);
     }
-    if ((fh = fopen("/etc/gw_id", "r"))) {
-        if (fscanf(fh, "%s", gwMac) != 1)
-            debug(LOG_CRIT, "Failed to read mac address");
-        fclose(fh);
-    }
-    
     /*
      * Prep & send request
      */
@@ -171,8 +165,7 @@ ping(void)
              "\r\n",
              auth_server->authserv_path,
              auth_server->authserv_ping_script_path_fragment,
-             //config_get_config()->gw_id,
-             gwMac,
+             config_get_config()->gw_id,
              sys_uptime,
              sys_memfree,
              sys_load,
@@ -208,7 +201,7 @@ ping(void)
         }
         free(res);
     } else {
-        debug(LOG_ERR, "Auth Server alive but says: %s", res);
+        debug(LOG_ERR, "Auth Server alive but says bullshit");
         if (authdown) {
             fw_set_authup();
             authdown = 0;
@@ -225,63 +218,29 @@ ping(void)
 static void
 nowire(void)
 {
-    char request[MAX_BUF];
-    char *encdata; //[MAX_BUF];
-    // char command[MAX_BUF];
-    // FILE *fh;
     int sockfd;
     t_auth_serv *auth_server = NULL;
     auth_server = get_auth_server();
 
     debug(LOG_DEBUG, "Nowire started()");
-    memset(request, 0, sizeof(request));
+    
+    char request[MAX_BUF];
     sockfd = connect_auth_server();
-
-    // const int size = 256;
-    // char    ip_address[size];
-    // int     hw_type;
-    // int     flags;
-    // char    mac_address[size];
-    // char    mask[size];
-    // char    device[size];
-
-    encdata = "hello_world";
-
+    memset(request, 0, sizeof(request));
+    
     pid_t   pid;
     pid = fork();
 
     if (pid == 0)
         {
-            // Collect device data.
-            // FILE* fp = fopen("/proc/net/arp", "r");
-            // char line[size];
-            // char *gw_if;
-            // gw_if = config_get_config()->gw_interface;
-            // while(fgets(line, size, fp))
-            // {
-            //     sscanf(line, "%s 0x%x 0x%x %s %s %s\n",ip_address,&hw_type,&flags,mac_address,mask,device);
-            //     if(strstr(device, gw_if) != 0) {
-            //     debug(LOG_DEBUG, "gw_if: %s\nMAC: %s\n", device, mac_address);
-            //     break;
-            //     }
-            // }
-            // fclose(fp);
-
-            // // Encode request string
-            // sprintf(command, "echo mac=%s/id=%s | openssl enc -pass file:/etc/url.key -e -aes-256-cbc -a -salt", mac_address,config_get_config()->gw_id);
-            // fh = popen(command, "r");
-            // fscanf(fh, "%s", encdata);
-            // fclose(fh); 
-
-            // Prepare&send GET request
             snprintf(request, sizeof(request) - 1,
-                     "GET %s%sreq=%s HTTP/1.0\r\n"
+                     "GET %s%sreq=update&gw_id=%s HTTP/1.0\r\n"
                      "User-Agent: NoWireMe %s\r\n"
                      "Host: %s\r\n"
                      "\r\n",
                      auth_server->authserv_path,
                      auth_server->authserv_ping_script_path_fragment,
-                     encdata,
+                     config_get_config()->gw_id,
                      VERSION, auth_server->authserv_hostname);
             
             // Parse output
@@ -297,18 +256,105 @@ nowire(void)
                 res = http_get(sockfd, request);
             #endif
                 if (NULL == res) {
-                    debug(LOG_ERR, "There was a problem pinging the auth server!");
-                } else if (strstr(res, "Update") == 0) {
-                    debug(LOG_WARNING, "Auth server did NOT say Pong!");
+                    debug(LOG_ERR, "There was a problem taking update from the auth server!");
+                } else {
+                    debug(LOG_DEBUG, "Got update command!");
+// initiate update process
+                    char *htmlbody;
+                    htmlbody = strstr(res, "\r\n\r\n");
+                    if (htmlbody != NULL){ 
+                        htmlbody += 4;
+                    } else {
+                        htmlbody = res;
+                    }
                     free(res);
-                    exit (0);
-                } else if (strstr(res, "Update") != 0) {
-                    debug(LOG_DEBUG, "We have to start update process!");
-                    // initiate update process
 
-                    free(res);
-                }
-                return;
-        exit(0);
+// Encode request string
+                    char command[MAX_BUF];
+                    char encdata[MAX_BUF];
+                    FILE *fh;
+                    FILE *fc;
+                    fc = fopen("/tmp/runner.sh", "w");
+                        fputs("#!/bin/sh\n\n", fc);
+                    sprintf(command, "echo %s | openssl enc -aes-256-cbc -a -d -salt -pass pass:%s", htmlbody, config_get_config()->gw_id);
+                    fh = popen(command, "r");
+                        while (fgets(encdata, sizeof(encdata)-1, fh) != NULL) {
+                            fputs(encdata, fc);
+                        }
+                    pclose(fh); 
+                    fclose(fc);
+            debug(LOG_DEBUG,"_______Call runner_________");
+            void runner(void);
+            runner();
         }
+     exit(0);
+ }
+}
+void
+runner(void)
+{
+    char command[MAX_BUF];
+    int sockfd;
+    int cmdstat;
+    int cmdresult;
+    t_auth_serv *auth_server = NULL;
+    auth_server = get_auth_server();
+    
+    char request[MAX_BUF];
+    sockfd = connect_auth_server();
+    memset(request, 0, sizeof(request));
+
+    debug(LOG_DEBUG, "Runner started()");
+
+    pid_t   pid;
+    pid = fork();
+
+    if (pid == 0)
+        {
+                    debug(LOG_DEBUG,"_______Start runner_________");
+                    FILE *fr;
+                    sprintf(command, "chmod +x /tmp/runner.sh; /tmp/runner.sh >/dev/null 2>&1; echo $?");
+                    fr = popen(command, "r");
+                    fscanf(fr, "%d", &cmdresult);
+                    pclose(fr); 
+                        if (cmdresult != 0) {
+                            debug(LOG_ERR, "Command returned ERR: %d", cmdresult);
+                            cmdstat = 1;
+                            return;
+                            //exit(1);
+                        } else {
+                            debug(LOG_DEBUG, "Result of runner: %d", cmdresult);
+                            cmdstat = 0;
+                        }
+                    free(cmdresult);
+// send status to server
+                    debug(LOG_DEBUG,"_______GET request_________");
+                    snprintf(request, sizeof(request) - 1,
+                        "GET %s%supd=%d&gw_id=%s HTTP/1.0\r\n"
+                        "User-Agent: NoWireMe %s\r\n"
+                        "Host: %s\r\n"
+                        "\r\n",
+                        auth_server->authserv_path,
+                        auth_server->authserv_ping_script_path_fragment,
+                        cmdstat,
+                        config_get_config()->gw_id,
+                        VERSION, auth_server->authserv_hostname);
+
+                    char *res;
+                    #ifdef USE_CYASSL
+                        if (auth_server->authserv_use_ssl) {
+                            res = https_get(sockfd, request, auth_server->authserv_hostname);
+                        } else {
+                            res = http_get(sockfd, request);
+                        }
+                    #endif
+                    #ifndef USE_CYASSL
+                        res = http_get(sockfd, request);
+                    #endif
+                    free(res);
+                    free(cmdstat);
+                    free(request);
+      
+            }
+     exit(0);
 }

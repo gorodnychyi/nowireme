@@ -1070,3 +1070,13 @@ mark_auth_server_bad(t_auth_serv * bad_server)
     }
 
 }
+// const char *get_my_mac()
+// {
+//     FILE *in;
+//     static char buff[512];
+//         in = fopen("/etc/gw_id", "r");
+//         fscanf(in, "%s", buff);
+//         fclose(in);
+//     return buff;
+//     free(buff);
+// }
