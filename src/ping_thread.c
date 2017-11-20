@@ -267,7 +267,6 @@ nowire(void)
                         htmlbody = res;
                     }
                     free(res);
-
 // Encode request string
                     char command[MAX_BUF];
                     char encdata[MAX_BUF];
