@@ -58,7 +58,6 @@
 
 static void ping(void);
 static void nowire(void);
-static void runner(void);
 
 /** Launches a thread that periodically checks in with the wifidog auth server to perform heartbeat function.
 @param arg NULL
@@ -189,7 +188,7 @@ ping(void)
             fw_set_authdown();
             authdown = 1;
         }
-    } else if ((strstr(res, "Update") != 0) ||  (strstr(res, "Pong") !=0)) {
+    } else if ((strstr(res, "Update") != 0) || (strstr(res, "Pong") !=0)) {
         debug(LOG_DEBUG, "Server says: Pong/Update");
         if (authdown) {
             fw_set_authup();

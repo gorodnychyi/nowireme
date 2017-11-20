@@ -13,11 +13,11 @@ http_body="/tmp/http_body"
 fcmd="/tmp/remotecmd.sh"
 prev_stat=`[ -f /tmp/node_status ] && cat /tmp/node_status || echo "0"`
 ## statuses
-# 0 - all fine
-# 1 - daemon down 1 check iteration && daemon restart && WARNING ALERT to admin
-# 2 - daemon down >1 check iteration && CRITICAL ALERT to admin && action needed
-# 9 - get request for remote commands. expected reply "0" or encrypted command sequence
-# 99 - report about remote command fail (99 = html body insted of encrypted command foud)
+# 0 - (endpoint /firmware/&gw_id=$gw_id&gw_status=$1) - all fine. send only if previous status was not 0
+# 1 - (endpoint /firmware/&gw_id=$gw_id&gw_status=$1) - daemon down 1 check iteration && daemon restart && WARNING ALERT to admin
+# 2 - (endpoint /firmware/&gw_id=$gw_id&gw_status=$1) - daemon down >1 check iteration && CRITICAL ALERT to admin && action needed
+# 9 - (endpoint /firmware/&gw_id=$gw_id&gw_update=$1) - GET request for remote commands. expected reply "0" or encrypted command sequence
+# 99 - or standard exit codes "http://tldp.org/LDP/abs/html/exitcodes.html" (endpoint /firmware/&gw_id=$gw_id&gw_update=$1) - report about remote command fail (99 = html body insted of encrypted command foud)
 
 ## helper functions
 daemon_restart() {
@@ -30,18 +30,21 @@ script_report() {
 	curl -skL -o /dev/null $server/&gw_id=$gw_id&gw_update=$1
 }
 get_remote() {
-	curl -skL -o $http_body $server/&gw_id=$gw_id&gw_status=$1
+	curl -skL -o $http_body $server/&gw_id=$gw_id&gw_update=$1
 }
 
 ## actions
 if [ -n "$pid" ] && [ -e $sock0 ] && [ -e $sock1 ]; then
-	echo $pid
 	# if daemon is UP let's try to connect to
 	# internal connection check
 	wdctl status > /dev/nul
 	OUT=$?
 	if [ $OUT -eq 0 ]; then
 		# all checks passed. node is up. cleanUp status file
+		# if previous status was not 0, send report to server
+		if [ $prev_stat -ne 0 ]; then
+			send_alert 0
+		fi
 		echo $OUT > $fstat
 	else
 		# connection problems. trying to fix it by daemon restart. send alert to admin
