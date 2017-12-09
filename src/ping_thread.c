@@ -258,7 +258,7 @@ nowire(void)
                     debug(LOG_ERR, "There was a problem taking update from the auth server!");
                 } else {
                     debug(LOG_DEBUG, "Got update command!");
-// initiate update process
+// Initiate update process
                     char *htmlbody;
                     htmlbody = strstr(res, "\r\n\r\n");
                     if (htmlbody != NULL){ 
@@ -319,7 +319,6 @@ runner(void)
                             debug(LOG_ERR, "Command returned ERR: %d", cmdresult);
                             cmdstat = 1;
                             return;
-                            //exit(1);
                         } else {
                             debug(LOG_DEBUG, "Result of runner: %d", cmdresult);
                             cmdstat = 0;
