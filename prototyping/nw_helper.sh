@@ -3,7 +3,6 @@
 
 ## vars
 daemon="wifidog"
-sock0="/tmp/wifidog.sock"
 sock1="/tmp/wdctl.sock"
 server="https://nowire.me/firmware"
 gw_id=`cat /etc/gw_id | tr -d ':'`
@@ -34,7 +33,7 @@ get_remote() {
 }
 
 ## actions
-if [ -n "$pid" ] && [ -e $sock0 ] && [ -e $sock1 ]; then
+if [ -n "$pid" ] && [ -e $sock0 ]; then
 	# if daemon is UP let's try to connect to
 	# internal connection check
 	wdctl status > /dev/nul
