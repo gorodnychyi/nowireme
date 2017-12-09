@@ -3,7 +3,7 @@
 
 ## vars
 daemon="wifidog"
-sock1="/tmp/wdctl.sock"
+sock0="/tmp/wdctl.sock"
 server="https://nowire.me/firmware"
 gw_id=`cat /etc/gw_id | tr -d ':'`
 pid=`pgrep $daemon`
