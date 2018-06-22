@@ -7,6 +7,7 @@ The WiFi Guard Dog project is a complete and embeddable captive portal
 solution for wireless community groups or individuals who wish to open a
 free hotspot while still preventing abuse of their Internet connection.
 
+
 More information and the old issue tracker can be found on
 [dev.wifidog.org][homepage].
 Nowadays, development happens on [GitHub][github].
